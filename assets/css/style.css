@@ -1,0 +1,34 @@
+#bgPIc {
+    text-align: center;
+}
+
+#leftPanel{
+    position: relative;
+    bottom: 614px;
+    left: 42px;
+}
+#topPanel {
+    position: relative;
+    bottom: 525px;
+    left: 167px;
+    font-size: 16px;
+}
+#rightPanel{
+    position: relative;
+    bottom: 200px;
+    left: 62px;
+    font-size: 16px;    
+
+}
+#lBottomPanel{
+    position: relative;
+    bottom: 310px;
+    right: 433px;
+    font-size: 16px;
+}
+.buttonBg {
+    background-color: #8ccc25;
+}
+.rBottomPanel{
+
+}
