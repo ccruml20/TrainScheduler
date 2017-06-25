@@ -4,14 +4,13 @@ $(document).ready(function() {
 
     // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyCL59VETDInoLErsQqJ71tu5ADHaMzVqUY",
-    authDomain: "trainscheduler-e8f8a.firebaseapp.com",
-    databaseURL: "https://trainscheduler-e8f8a.firebaseio.com",
-    projectId: "trainscheduler-e8f8a",
-    storageBucket: "trainscheduler-e8f8a.appspot.com",
-    messagingSenderId: "23013841846"
+    apiKey: "AIzaSyC1vSG_ls9Io8_q8U0z5mAOAdRjyaRdUJM",
+    authDomain: "trains-35223.firebaseapp.com",
+    databaseURL: "https://trains-35223.firebaseio.com",
+    projectId: "trains-35223",
+    storageBucket: "trains-35223.appspot.com",
+    messagingSenderId: "236956462511"
   };
-  
   firebase.initializeApp(config);
 
     var database = firebase.database();
@@ -23,7 +22,7 @@ $(document).ready(function() {
         var trainName = $("#train-name-input").val().trim();
         var tFrequency = $("#freq-input").val().trim(); // 
         var firstTime = $("#start-input").val().trim();
-        var trainDest = $("#dest-input").val().trim();      
+        var trainDest = $("#dest-input").val().trim();
         // console.log(firstTimeConverted);
         var firstTimeConverted = moment(firstTime, "hh:mm").subtract(1, "years");
         // console.log(firstTimeConverted);
@@ -51,14 +50,20 @@ $(document).ready(function() {
             freq: tFrequency,
             next: nextTrain,
             current: currentTime,
-            minsOut: tMinutesTillTrain,
+            minsOut: tMinutesTillTrain
         };
+
         // Uploads employee data to the database
-        trains.push();
-        trains.set(newTrain);
+  
+ 
+
+   trains.push(newTrain);
+
+  trains.set("trains");
+
 
         console.log("this is the stinking train object", newTrain)
-        // Logs everything to console
+            // Logs everything to console
         console.log(newTrain.name);
         console.log(newTrain.dest);
         console.log(newTrain.start);
@@ -96,7 +101,7 @@ $(document).ready(function() {
 
         // Add each train's data into the table
         $("#employee-table > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDest + "</td><td>" +
-            tFrequency + "</td><td>" + nextTrain+ "</td><td>" + tMinutesTillTrain + "</td></tr>");
+            tFrequency + "</td><td>" + nextTrain + "</td><td>" + tMinutesTillTrain + "</td></tr>");
     });
     // var tFrequency = $("#freq-input").val().trim();
     // // 
@@ -104,4 +109,3 @@ $(document).ready(function() {
     // First Time (pushed back 1 year to make sure it comes before current time)
 
 });
-
