@@ -4,17 +4,18 @@ $(document).ready(function() {
 
     // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyC1vSG_ls9Io8_q8U0z5mAOAdRjyaRdUJM",
-    authDomain: "trains-35223.firebaseapp.com",
-    databaseURL: "https://trains-35223.firebaseio.com",
-    projectId: "trains-35223",
-    storageBucket: "trains-35223.appspot.com",
-    messagingSenderId: "236956462511"
+    apiKey: "AIzaSyB8HBgnZx2QxLGzUCkwkL_DOxnysilfblk",
+    authDomain: "trainschedule-780d0.firebaseapp.com",
+    databaseURL: "https://trainschedule-780d0.firebaseio.com",
+    projectId: "trainschedule-780d0",
+    storageBucket: "trainschedule-780d0.appspot.com",
+    messagingSenderId: "940050041687"
   };
   firebase.initializeApp(config);
 
     var database = firebase.database();
     var trains = database.ref("trains");
+    var nextTrain;
     // 2. Button for adding Employees
     $("#add-employee-btn").on("click", function(event) {
         event.preventDefault();
@@ -39,37 +40,35 @@ $(document).ready(function() {
         var tMinutesTillTrain = tFrequency - tRemainder;
         // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
         // Next Train
-        var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+        nextTrain = moment().add(tMinutesTillTrain, "minutes");
+
+
         // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
         // Creates local "temporary" object for holding employee data
-        newTrain = {
+
+        trains.push();
+        trains.set({
             name: trainName,
             dest: trainDest,
             start: firstTime,
             freq: tFrequency,
-            next: nextTrain,
-            current: currentTime,
+            // next: nextTrain,
+            // current: currentTime,
             minsOut: tMinutesTillTrain
-        };
+        });
 
         // Uploads employee data to the database
-  
- 
-
-   trains.push(newTrain);
-
-  trains.set("trains");
 
 
-        console.log("this is the stinking train object", newTrain)
+        console.log("this is the stinking train object", trains)
             // Logs everything to console
-        console.log(newTrain.name);
-        console.log(newTrain.dest);
-        console.log(newTrain.start);
-        console.log(newTrain.freq);
-        console.log(newTrain.next);
-        console.log(newTrain.current);
+        console.log(trains.name);
+        console.log(trains.dest);
+        console.log(trains.start);
+        console.log(trains.freq);
+        console.log(trains.next);
+        console.log(trains.current);
         // Alert
         alert("Employee successfully added");
         // Clears all of the text-boxes
@@ -79,7 +78,7 @@ $(document).ready(function() {
         $("#freq-input").val("");
     });
 
-    database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+    trains.on("child_added", function(childSnapshot, prevChildKey) {
         console.log(childSnapshot.val());
         // Store everything into a iable.
         var trainName = childSnapshot.val().name;
@@ -109,3 +108,4 @@ $(document).ready(function() {
     // First Time (pushed back 1 year to make sure it comes before current time)
 
 });
+
