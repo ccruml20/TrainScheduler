@@ -4,18 +4,17 @@ $(document).ready(function() {
 
     // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyB8HBgnZx2QxLGzUCkwkL_DOxnysilfblk",
-    authDomain: "trainschedule-780d0.firebaseapp.com",
-    databaseURL: "https://trainschedule-780d0.firebaseio.com",
-    projectId: "trainschedule-780d0",
-    storageBucket: "trainschedule-780d0.appspot.com",
-    messagingSenderId: "940050041687"
+    apiKey: "AIzaSyAJklvKg1mwNJWTYWY-GfvQ2i-2MCfmKf0",
+    authDomain: "trainscheduler-d8b53.firebaseapp.com",
+    databaseURL: "https://trainscheduler-d8b53.firebaseio.com",
+    projectId: "trainscheduler-d8b53",
+    storageBucket: "",
+    messagingSenderId: "752562757085"
   };
   firebase.initializeApp(config);
 
     var database = firebase.database();
     var trains = database.ref("trains");
-    var nextTrain;
     // 2. Button for adding Employees
     $("#add-employee-btn").on("click", function(event) {
         event.preventDefault();
@@ -40,15 +39,15 @@ $(document).ready(function() {
         var tMinutesTillTrain = tFrequency - tRemainder;
         // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
         // Next Train
-        nextTrain = moment().add(tMinutesTillTrain, "minutes");
+        var nextTrain = moment().add(tMinutesTillTrain, "minutes");
 
 
         // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
         // Creates local "temporary" object for holding employee data
 
-        trains.push();
-        trains.set({
+        // trains.push();
+        trains.push({
             name: trainName,
             dest: trainDest,
             start: firstTime,
@@ -57,6 +56,7 @@ $(document).ready(function() {
             // current: currentTime,
             minsOut: tMinutesTillTrain
         });
+        
 
         // Uploads employee data to the database
 
