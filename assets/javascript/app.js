@@ -1,7 +1,5 @@
 $(document).ready(function() {
 
-    //     console.log( "ready!" );
-
     // Initialize Firebase
   var config = {
     apiKey: "AIzaSyAJklvKg1mwNJWTYWY-GfvQ2i-2MCfmKf0",
@@ -11,73 +9,50 @@ $(document).ready(function() {
     storageBucket: "",
     messagingSenderId: "752562757085"
   };
+
   firebase.initializeApp(config);
 
+    // Global database variables
     var database = firebase.database();
     var trains = database.ref("trains");
-    // 2. Button for adding Employees
+
+    // 2. Button for adding New Trains
     $("#add-employee-btn").on("click", function(event) {
         event.preventDefault();
-        // Grabs user input
+
+        // stores user input data
         var trainName = $("#train-name-input").val().trim();
         var tFrequency = $("#freq-input").val().trim(); // 
         var firstTime = $("#start-input").val().trim();
         var trainDest = $("#dest-input").val().trim();
-        // console.log(firstTimeConverted);
+
+        // calulates train data
         var firstTimeConverted = moment(firstTime, "hh:mm").subtract(1, "years");
-        // console.log(firstTimeConverted);
-        // Current Time
         var currentTime = moment();
-        // console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
-        // Difference between the times
         var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-        // console.log("DIFFERENCE IN TIME: " + diffTime);
-        // Time apart (remainder)
         var tRemainder = diffTime % tFrequency;
-        // console.log(tRemainder);
-        // Minute Until Train
         var tMinutesTillTrain = tFrequency - tRemainder;
-        // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
-        // Next Train
         var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+        var arrivalTime = moment(nextTrain).format("hh:mm A");
 
-
-        // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
-        // Creates local "temporary" object for holding employee data
-
-        // trains.push();
+        // Pushes object to firebase
         trains.push({
             name: trainName,
             dest: trainDest,
             start: firstTime,
             freq: tFrequency,
-            // next: nextTrain,
-            // current: currentTime,
+            next: arrivalTime,
             minsOut: tMinutesTillTrain
         });
-        
 
-        // Uploads employee data to the database
-
-
-        console.log("this is the stinking train object", trains)
-            // Logs everything to console
-        console.log(trains.name);
-        console.log(trains.dest);
-        console.log(trains.start);
-        console.log(trains.freq);
-        console.log(trains.next);
-        console.log(trains.current);
-        // Alert
-        alert("Employee successfully added");
-        // Clears all of the text-boxes
+        //Clears the input fields
         $("#train-name-input").val("");
         $("#dest-input").val("");
         $("#start-input").val("");
         $("#freq-input").val("");
     });
 
+    //reads the trains data object from firebase
     trains.on("child_added", function(childSnapshot, prevChildKey) {
         console.log(childSnapshot.val());
         // Store everything into a iable.
@@ -88,24 +63,10 @@ $(document).ready(function() {
         var currentTime = childSnapshot.val().current;
         var nextTrain = childSnapshot.val().next;
         var tMinutesTillTrain = childSnapshot.val().minsOut;
-        // Employee Info
-        console.log(trainName);
-        console.log(trainDest);
-        console.log(firstTime);
-        console.log(tFrequency);
-        console.log(currentTime);
-        console.log(nextTrain);
-        // Prettify the employee start
 
-
-        // Add each train's data into the table
+        //Updates table html
         $("#employee-table > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDest + "</td><td>" +
             tFrequency + "</td><td>" + nextTrain + "</td><td>" + tMinutesTillTrain + "</td></tr>");
     });
-    // var tFrequency = $("#freq-input").val().trim();
-    // // 
-    // var firstTime = $("#start-input").val().trim();
-    // First Time (pushed back 1 year to make sure it comes before current time)
-
 });
 
